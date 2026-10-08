@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForgeSec AI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--cyan:#00f2fe;--violet:#8b5cf6;--line:rgba(255,255,255,.1);--mut:#8a8a93;--txt:#e4e4e7}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font:14px/1.6 'JetBrains Mono',ui-monospace,Menlo,monospace;
+background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+/* nav */
+nav{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:rgba(10,10,10,.8);backdrop-filter:blur(16px)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-weight:700;color:#fff}.logo b{color:var(--cyan)}
+.links{display:flex;gap:28px;color:var(--mut)}.links a:hover{color:var(--cyan)}
+.right{display:flex;gap:12px;align-items:center}
+.status{border:1px solid rgba(52,211,153,.3);color:#6ee7b7;border-radius:99px;padding:2px 12px;font-size:12px;display:flex;gap:8px;align-items:center}
+.dot{width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.btn{background:var(--cyan);color:#000;border:0;border-radius:8px;padding:7px 14px;font-weight:700;font-size:12px}
+.btn:hover{filter:brightness(1.1)}
+.ghost{background:none;color:var(--txt);border:1px solid var(--line);font-weight:500}
+.ghost:hover{border-color:var(--violet)}
+#burger{display:none;background:none;border:0;font-size:22px}
+/* hero */
+.hero{text-align:center;padding:96px 0 40px;max-width:760px;margin:0 auto}
+h1{font-size:clamp(34px,6vw,60px);line-height:1.1;letter-spacing:-.03em;color:#fff;animation:rise .7s both}
+h1 span{background:linear-gradient(90deg,#67e8f9,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.hero p{color:var(--mut);margin:20px auto 28px;max-width:520px}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta .btn{padding:10px 20px;font-size:13px}
+.cta .btn:first-child{box-shadow:0 0 24px -4px var(--cyan)}
+/* workspace */
+.ws{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:32px 0}
+.panel{height:640px;display:flex;flex-direction:column;overflow:hidden;border-radius:16px;background:rgba(13,13,16,.85)}
+.chat{border:1px solid rgba(0,242,254,.2);box-shadow:0 0 40px -15px var(--cyan)}
+.sand{border:1px solid rgba(139,92,246,.28);box-shadow:0 0 40px -15px var(--violet)}
+.ph{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);color:#d4d4d8}
+.ph small{margin-left:auto;color:var(--mut)}
+#msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+.m{display:flex;gap:12px;animation:rise .3s both}.m.u{flex-direction:row-reverse}
+.av{width:28px;height:28px;flex:none;border-radius:50%;border:1px solid rgba(0,242,254,.4);display:grid;place-items:center;font-size:12px;color:var(--cyan)}
+.u .av{border-color:rgba(139,92,246,.5);color:#c4b5fd}
+.bub{max-width:85%;padding:12px 16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:#d4d4d8;min-width:0}
+.u .bub{background:rgba(139,92,246,.15);border-color:transparent;color:#fff}
+.code{margin:12px 0 2px;border:1px solid var(--line);border-radius:8px;background:rgba(0,0,0,.6);overflow:hidden}
+.code header{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;border-bottom:1px solid var(--line);font-size:11px;color:var(--mut)}
+.cp{background:none;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:11px;color:#a1a1aa}
+.cp:hover{border-color:var(--cyan);color:var(--cyan)}
+pre{overflow-x:auto;font-size:12.5px;line-height:1.6}
+.code pre{padding:12px}
+.k{color:#e879f9}.s{color:#6ee7b7}.c{color:#71717a}.n{color:#fdba74}
+.typing{margin-left:40px;display:flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:b 1s infinite}
+.typing i:nth-child(2){animation-delay:.12s}.typing i:nth-child(3){animation-delay:.24s}
+@keyframes b{50%{transform:translateY(-4px)}}
+.in{border-top:1px solid var(--line);padding:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{background:none;border:1px solid rgba(139,92,246,.35);border-radius:99px;padding:3px 12px;font-size:12px;color:#d4d4d8}
+.chip:hover{border-color:var(--cyan);color:var(--cyan)}
+form{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.5);padding:8px 12px}
+form:focus-within{border-color:var(--cyan)}
+form input{flex:1;background:none;border:0;outline:0;color:#fff;font:inherit;min-width:0}
+form button{width:32px;height:32px;border:0;border-radius:8px;background:var(--cyan);color:#000;font-weight:700}
+form button:disabled{opacity:.4}
+/* sandbox */
+.bar{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-right:12px;gap:8px}
+.tabs{display:flex}.tab{background:none;border:0;border-bottom:2px solid transparent;padding:12px 16px;font-size:12px;color:var(--mut)}
+.tab.on{border-color:var(--cyan);color:#a5f3fc;background:rgba(255,255,255,.04)}
+.acts{display:flex;gap:6px}.acts .btn{padding:6px 10px}
+#ed{flex:1;overflow:auto;padding:12px 0}
+.ln{display:flex;line-height:24px}.ln:hover{background:rgba(255,255,255,.02)}
+.ln span{width:40px;flex:none;text-align:right;padding-right:12px;color:#52525b;user-select:none}
+.term{height:176px;border-top:1px solid var(--line);background:rgba(0,0,0,.6)}
+.term header{padding:6px 16px;border-bottom:1px solid var(--line);font-size:11px;color:var(--mut)}
+#log{height:calc(100% - 29px);overflow-y:auto;padding:12px;font-size:12px}
+.cy{color:#67e8f9}.gr{color:#6ee7b7}.am{color:#fcd34d}.vi{color:#c4b5fd}.mu{color:#a1a1aa}
+/* features + footer */
+.feat{padding:80px 0}
+.feat h2{text-align:center;font-size:clamp(22px,3vw,30px);color:#fff;margin-bottom:40px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{border:1px solid var(--line);background:rgba(255,255,255,.04);backdrop-filter:blur(16px);border-radius:16px;padding:24px;transition:border-color .2s}
+.card:hover{border-color:rgba(0,242,254,.4)}
+.ic{width:40px;height:40px;border:1px solid rgba(0,242,254,.3);border-radius:8px;display:grid;place-items:center;color:var(--cyan);margin-bottom:16px;font-size:18px}
+.card h3{color:#fff;margin-bottom:8px;font-size:15px}.card p{color:var(--mut);font-size:13px}
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:12px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:32px 16px;flex-wrap:wrap}
+.foot div{display:flex;gap:16px;align-items:center}
+.badge{border:1px solid var(--line);border-radius:99px;padding:3px 12px;color:#d4d4d8}.badge:hover{border-color:var(--cyan)}
+@media(max-width:1000px){.ws{grid-template-columns:1fr}.cards{grid-template-columns:1fr}}
+@media(max-width:820px){.links,.status,.nav .btn{display:none}#burger{display:block}
+ nav.open .links{display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:#0a0a0a;padding:16px;gap:16px;border-bottom:1px solid var(--line)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<nav id="nav"><div class="wrap nav">
+  <a href="#" class="logo"><b>⚡</b> ForgeSec AI</a>
+  <div class="links"><a href="#features">Features</a><a href="#playground">Playground</a><a href="https://mrfin.one/docs">Docs</a><a href="https://github.com/mrfin-one/forgesec-ai">GitHub</a></div>
+  <div class="right"><span class="status"><i class="dot"></i>API Status: Operational</span><a href="#playground" class="btn">Launch Web App</a>
+  <button id="burger" aria-label="Toggle menu">☰</button></div>
+</div></nav>
+
+<header class="wrap hero">
+  <h1>Find the flaw. <span>Ship the fix.</span></h1>
+  <p>Chat with an AI built for security work, then test its suggestions in a live sandbox without leaving the page.</p>
+  <div class="cta"><a href="#playground" class="btn">Try the playground</a><a href="https://github.com/mrfin-one/forgesec-ai" class="btn ghost">View source</a></div>
+</header>
+
+<section id="playground" class="wrap ws">
+  <section class="panel chat" aria-label="AI chat">
+    <div class="ph">🤖 forge-assistant <small><i class="dot" style="display:inline-block"></i> online</small></div>
+    <div id="msgs"></div>
+    <div class="in">
+      <div class="chips" id="chips"></div>
+      <form id="f"><span style="color:var(--cyan)">&gt;</span><input id="q" placeholder="Ask about a vulnerability, or paste code…" autocomplete="off"><button id="send" aria-label="Send message" disabled>➤</button></form>
+    </div>
+  </section>
+  <section class="panel sand" aria-label="Code sandbox">
+    <div class="bar">
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="acts"><button class="btn" data-a="run">▶ Run Code</button><button class="btn ghost" data-a="refactor">✨ AI Refactor</button><button class="btn ghost" data-a="scan">🛡 Security Scan</button></div>
+    </div>
+    <pre id="ed"></pre>
+    <div class="term"><header>▮ terminal <span id="run" class="cy"></span></header><div id="log" aria-live="polite"></div></div>
+  </section>
+</section>
+
+<section id="features" class="wrap feat">
+  <h2>Built for people who break things on purpose</h2>
+  <div class="cards">
+    <div class="card"><div class="ic">⌕</div><h3>Context-Aware Security Audits</h3><p>Deep static analysis that reads your whole repository, so findings reflect how your code actually fits together.</p></div>
+    <div class="card"><div class="ic">✱</div><h3>Real-time Autonomous Debugging</h3><p>When a run fails, ForgeSec traces the error and proposes a fix you can apply with one click.</p></div>
+    <div class="card"><div class="ic">🔒</div><h3>Zero-Knowledge Local Workspaces</h3><p>Your code stays in an isolated sandbox on your machine or inside your enterprise network.</p></div>
+  </div>
+</section>
+
+<footer><div class="wrap foot">
+  <div><a class="badge" href="https://github.com/mrfin-one/forgesec-ai">★ Open source on GitHub</a><a href="https://mrfin.one/docs">Docs</a></div>
+  <p>Engineered by Fin (@mrfin.one)</p>
+</div></footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const KW=/\b(const|let|var|function|return|import|from|if|else|async|await|def|print|for|in|export|new|try|catch|require|require)\b/g;
+function hl(code){
+  return esc(code).replace(/(\/\/.*|#.*)|("[^"]*"|'[^']*')|(\b\d+\b)|(\b[a-z]+\b)/g,(m,c,s,n,w)=>
+    c?`<span class="c">${c}</span>`:s?`<span class="s">${s}</span>`:n?`<span class="n">${n}</span>`:
+    /^(const|let|var|function|return|import|from|if|else|async|await|def|print|for|in|export|new|try|catch|require)$/.test(w)?`<span class="k">${w}</span>`:m);
+}
+/* chat */
+const R={
+"Analyze Smart Contract":{t:"I scanned the withdraw flow. It sends ETH before updating the balance, which allows reentrancy. Update state first, then transfer:",l:"solidity",c:`function withdraw(uint amount) external {\n  require(balances[msg.sender] >= amount);\n  balances[msg.sender] -= amount; // effects first\n  (bool ok, ) = msg.sender.call{value: amount}("");\n  require(ok);\n}`},
+"Audit Express.js Auth":{t:"Found 3 issues in your auth middleware: a hardcoded JWT fallback secret, tokens that never expire, and no login rate limit. Here is a safer verifier:",l:"typescript",c:`import jwt from "jsonwebtoken";\n\nexport function verify(token) {\n  const secret = process.env.JWT_SECRET;\n  if (!secret) throw new Error("JWT_SECRET missing");\n  return jwt.verify(token, secret, { algorithms: ["HS256"], maxAge: "15m" });\n}`},
+"Write Bash Recon Script":{t:"Here is a passive recon starter. Only run it against targets you are authorized to test.",l:"bash",c:`#!/usr/bin/env bash\n# usage: ./recon.sh example.com\ndomain="$1"\nsubfinder -d "$domain" -silent | httpx -silent -status-code > live.txt\necho "Found $(wc -l < live.txt) live hosts"`}};
+const FB={t:"Got it. Paste a snippet or describe the target and I will walk through likely weaknesses, then propose a fix you can test in the sandbox."};
+const msgs=$('#msgs');let busy=false;
+function add(role,m){
+  const d=document.createElement('div');d.className='m '+(role==='u'?'u':'');
+  d.innerHTML=`<div class="av">${role==='u'?'U':'AI'}</div><div class="bub">${esc(m.t)}${m.c?`<div class="code"><header>${m.l}<button class="cp">Copy</button></header><pre><code>${hl(m.c)}</code></pre></div>`:''}</div>`;
+  const cp=d.querySelector('.cp');
+  if(cp)cp.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(m.c);cp.textContent='Copied ✓';setTimeout(()=>cp.textContent='Copy',1500)};
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+function send(t){
+  t=t.trim();if(!t||busy)return;busy=true;add('u',{t});$('#q').value='';$('#send').disabled=true;
+  const ty=document.createElement('div');ty.className='typing';ty.innerHTML='<i></i><i></i><i></i>';msgs.appendChild(ty);msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{ty.remove();add('a',R[t]||FB);busy=false},900);
+}
+add('a',{t:"Welcome to ForgeSec. Paste code or pick a starting point below, and I will audit it with you."});
+Object.keys(R).forEach(k=>{const b=document.createElement('button');b.className='chip';b.textContent=k;b.onclick=()=>send(k);$('#chips').appendChild(b)});
+$('#q').oninput=e=>$('#send').disabled=!e.target.value.trim();
+$('#f').onsubmit=e=>{e.preventDefault();send($('#q').value)};
+/* sandbox */
+const F={
+"audit.ts":`import express from "express";\nimport jwt from "jsonwebtoken";\n\nconst app = express();\n// TODO: remove fallback secret\nconst secret = process.env.JWT_SECRET || "dev";\n\napp.get("/admin", (req, res) => {\n  const token = req.headers.authorization;\n  const user = jwt.verify(token, secret);\n  res.json({ user });\n});\n\napp.listen(3000);`,
+"exploit.py":`import requests\n\n# PoC: forge a token signed with the fallback secret\ntarget = "http://localhost:3000/admin"\nheaders = {"Authorization": "eyJhbGciOiJIUzI1NiJ9.forged"}\nr = requests.get(target, headers=headers)\nprint(r.status_code, r.text)`};
+const L={
+run:["$ tsx audit.ts","[info] compiled in 142ms","[ok] listening on :3000","[warn] unhandled: jwt.verify may throw on bad token"],
+refactor:["$ forge refactor audit.ts","[ai] analyzing 14 lines…","[ai] removed fallback secret","[ai] wrapped jwt.verify in try/catch","[ok] 2 changes ready to review"],
+scan:["$ forge scan --deep","[scan] 3 findings","[high] CWE-798 hardcoded credential   audit.ts:6","[warn] CWE-755 unhandled exception      audit.ts:10","[info] CWE-693 missing helmet() headers audit.ts:4"]};
+let cur="audit.ts",run=false;
+function draw(){
+  $('#ed').innerHTML=F[cur].split('\n').map((l,i)=>`<div class="ln"><span>${i+1}</span><code>${hl(l)||' '}</code></div>`).join('');
+  document.querySelectorAll('.tab').forEach(t=>{t.classList.toggle('on',t.textContent===cur);t.setAttribute('aria-selected',t.textContent===cur)});
+}
+Object.keys(F).forEach(f=>{const b=document.createElement('button');b.className='tab';b.setAttribute('role','tab');b.textContent=f;b.onclick=()=>{cur=f;draw()};$('#tabs').appendChild(b)});
+draw();
+$('#log').innerHTML='<div class="cy">$ forge ready. Choose an action to start.</div>';
+const cls=l=>/\[(high|warn)\]/.test(l)?'am':/\[ok\]/.test(l)?'gr':/\[ai\]/.test(l)?'vi':l[0]==='$'?'cy':'mu';
+document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+  if(run)return;run=true;const lg=$('#log');lg.innerHTML='';$('#run').textContent='running…';
+  const a=L[b.dataset.a];
+  a.forEach((l,i)=>setTimeout(()=>{lg.insertAdjacentHTML('beforeend',`<div class="${cls(l)}">${esc(l)}</div>`);lg.scrollTop=lg.scrollHeight;
+    if(i===a.length-1){run=false;$('#run').textContent=''}},350*(i+1)));
+});
+/* mobile nav */
+$('#burger').onclick=()=>$('#nav').classList.toggle('open');
+document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>$('#nav').classList.remove('open'));
+</script>
+</body>
+</html>
